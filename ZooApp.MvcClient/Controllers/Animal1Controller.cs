@@ -15,13 +15,13 @@ namespace ZooApp.MvcClient.Controllers
         // GET: Animal1
         public ActionResult Index()
         {
-            var viewAnimals = service.GetAnimals();
+            var viewAnimals = service.GetAll();
             return View(viewAnimals);
         }
 
         public ActionResult Details(int id)
         {
-            ViewAnimal animal = service.GetAnimal(id);
+            ViewAnimal animal = service.Get(id);
             return View(animal);
         }
         [HttpGet]
@@ -37,7 +37,7 @@ namespace ZooApp.MvcClient.Controllers
         }
         public ActionResult Edit(int id)
         {
-            Animal animal = service.GetDbAnimal(id);
+            Animal animal = service.GetDbModel(id);
             return View(animal);
         }
         [HttpPost]
@@ -46,9 +46,9 @@ namespace ZooApp.MvcClient.Controllers
             bool saved = service.Update(animal);
             return RedirectToAction("Index");
         }
-        public ActionResult Delete()
+        public ActionResult Delete(int id)
         {
-            return View();
+            return View(service.GetDbModel(id));
         }
         [HttpPost]
         public ActionResult Delete(Animal animal)

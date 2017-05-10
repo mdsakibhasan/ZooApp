@@ -13,41 +13,28 @@ namespace ZooApp.Services
     {
         //create a db object
         ZooContext db = new ZooContext();
-        public List<ViewAnimal> GetAnimals()
+        public List<ViewAnimal> GetAll()
         {
-            
             //fetch the db.animal data
             List<Animal> animals = db.Animals.ToList();
-
-
             List<ViewAnimal> viewAnimals = new List<ViewAnimal>();
             foreach (Animal animal in animals)
             {
-                ViewAnimal viewAnimal = new ViewAnimal()
-                {
-                    Id = animal.Id,
-                    Name = animal.Name,
-                    Origin = animal.Origin
-                };
+                ViewAnimal viewAnimal = new ViewAnimal(animal);
                 viewAnimals.Add(viewAnimal);
             }
             return viewAnimals;
         }
 
-        public ViewAnimal GetAnimal(int id)
+        public ViewAnimal Get(int id)
         {
             Animal animal = db.Animals.Find(id);
-            return new ViewAnimal()
-            {
-                Id = animal.Id,
-                Origin = animal.Origin,
-                Name = animal.Name,
-            };
+            return new ViewAnimal(animal);
         }
 
         public bool Save(Animal animal)
         {
-            Animal add = db.Animals.Add(animal);
+            db.Animals.Add(animal);
             db.SaveChanges();
             return true;
         }
@@ -67,7 +54,7 @@ namespace ZooApp.Services
             return true;
         }
 
-        public Animal GetDbAnimal(int id)
+        public Animal GetDbModel(int id)
         {
             return db.Animals.Find(id);
         }
